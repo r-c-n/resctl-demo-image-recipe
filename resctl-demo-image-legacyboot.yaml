@@ -90,9 +90,19 @@ actions:
     command: qemu-img convert -f raw -O vmdk -o subformat=streamOptimized "$ARTIFACTDIR/{{ $image }}.img" "$ARTIFACTDIR/{{ $image }}.vmdk"
 
   - action: run
+    description: Examine disk size
+    chroot: true
+    command: df -h / /boot
+
+  - action: run
     description: Create block map for {{ $image }}.img
     postprocess: true
     command: bmaptool create "$ARTIFACTDIR/{{ $image }}.img" > "$ARTIFACTDIR/{{ $image }}.img.bmap"
+
+  - action: run
+    description: Examine disk size
+    chroot: true
+    command: df -h / /boot
 
   - action: run
     description: Compress {{ $image }}.img
